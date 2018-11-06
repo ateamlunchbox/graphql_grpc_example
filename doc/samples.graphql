@@ -1,0 +1,41 @@
+mutation {
+  Place(direction: WEST,
+  x: 2,
+  y: 3) {
+    current_state {
+      direction
+      x
+      y
+    }
+  }
+}
+
+query {
+  Move {
+    current_state {
+      direction
+      x
+      y
+    }
+  }
+}
+
+query {
+  Left {
+    current_state {
+      direction
+      x
+      y
+    }
+  }
+}
+
+query {
+  Right {
+    current_state {
+      direction
+      x
+      y
+    }
+  }
+}
