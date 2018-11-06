@@ -9,4 +9,4 @@ This repository contains a bare-bones RoR application.
 * `bundle install`
 * In one terminal, start up the gRPC server included with the `ruby_robot` gem: `ruby_robot_grpc_server`
 * In another terminal, start up rails: `rails s`
-* Browse to http://localhost:/3000/graphiql to view and exercise the GraphQL schema using the GraphiQL GUI
+* Browse to http://localhost:3000/graphiql to view and exercise the GraphQL schema using the GraphiQL GUI
