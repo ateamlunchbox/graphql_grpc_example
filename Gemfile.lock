@@ -87,7 +87,7 @@ GEM
       railties
       sprockets-rails
     graphql (1.8.11)
-    graphql_grpc (0.1.1)
+    graphql_grpc (0.1.2)
       activesupport
       graphql
       grpc
