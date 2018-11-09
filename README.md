@@ -10,3 +10,7 @@ This repository contains a bare-bones RoR application.
 * In one terminal, start up the gRPC server included with the `ruby_robot` gem: `ruby_robot_grpc_server`
 * In another terminal, start up rails: `rails s`
 * Browse to http://localhost:3000/graphiql to view and exercise the GraphQL schema using the GraphiQL GUI
+
+# Important note about graphql_grpc and Ruby on Rails
+
+ActiveSupport modifies #to_json in a way that breaks serialization of parsed GraphQL requests.  [This block](https://github.com/ateamlunchbox/graphql_grpc_example/blob/master/app/controllers/graphql_grpc_controller.rb#L5) modifies things to make graphql_grpc work within RoR as a near-term fix.
