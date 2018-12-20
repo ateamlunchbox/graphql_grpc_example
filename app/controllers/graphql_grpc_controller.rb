@@ -1,6 +1,7 @@
 require 'graphql'
 require 'graphql_grpc'
 require 'ruby_robot'
+require 'graphql_schema'
 
 module ActiveSupport::ToJsonWithActiveSupportEncoder
   Rails.logger.warn "ATTENTION: In order to get GraphQL working w/ gRPC, ActiveSupport::ToJsonWithActiveSupportEncoder#to_json HAS BEEN REMOVED.  You have been warned."
@@ -27,7 +28,6 @@ class GraphqlGrpcController < ApplicationController
   private
 
   def handle_schema_query
-    schema = GraphQL::Schema.from_definition(proxy.to_gql_schema)
     Rails.logger.debug schema.to_json
     render json: schema.execute(params['query'], {})
   end
@@ -38,26 +38,11 @@ class GraphqlGrpcController < ApplicationController
     Rails.logger.debug "Calling proxy with: '#{gql_query_doc}'"
     document = GraphQL::Language::Parser.parse(gql_query_doc)
     # TODO: support passing GraphQL context info
-    render json: proxy.graphql.execute(document, {})
+    render json: schema.execute(gql_query_doc, {})
   end
 
-  def ruby_robot_service
-    ::RubyRobot::RubyRobot::Stub.new('localhost:31310', :this_channel_is_insecure)
-  end
-
-  def proxy
-    return @proxy if @proxy
-
-    services = { ruby_robot_service: ruby_robot_service }
-
-    @proxy = GraphqlGrpc::Proxy.new(
-      services, 
-      &lambda do |error| 
-        Rails.logger.error "Error in proxy"
-        error.backtrace.each { |i| Rails.logger.error(i) }
-        Rails.logger.error error
-      end
-    )
+  def schema
+    @schema ||= ::GraphqlSchema.get_instance
   end
   
   # Extract GraphQL variables from the payload
